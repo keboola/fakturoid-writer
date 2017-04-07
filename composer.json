@@ -1,0 +1,32 @@
+{
+    "name": "keboola/fakturoid-writer",
+    "license": "MIT",
+    "type": "project",
+    "description": "Keboola Fakturoid Writer",
+    "authors": [
+        {
+            "name": "Vladimír Kriška",
+            "email": "vlado@keboola.com"
+        }
+    ],
+    "require": {
+        "php": "~7.1",
+        "symfony/console": "~3.1",
+        "symfony/serializer": "~3.1",
+        "symfony/filesystem": "~3.1",
+        "nette/utils": "~2.4",
+        "keboola/csvmap": "~0.3",
+        "monolog/monolog": "~1.22"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.1",
+        "squizlabs/php_codesniffer": "~2.8",
+        "codeclimate/php-test-reporter": "~0.4",
+        "symfony/process": "~3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Keboola\\": "src/Keboola/"
+        }
+    }
+}

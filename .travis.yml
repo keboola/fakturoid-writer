@@ -1,0 +1,28 @@
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+before_script:
+  - docker -v
+  - docker-compose -v
+  - docker-compose build app
+  - docker-compose build app-tests
+
+script:
+  - >
+    docker-compose run
+    --rm
+    app-tests
+
+after_success:
+  - docker images
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ./deploy.sh
+  on:
+    tags: true
