@@ -11,7 +11,23 @@ Sample configuration and its description can be found [here](/config.md).
 
 ## Input
 
-TBD
+Two files at `/data/in/tables` path:
+
+- `invoice.csv`
+- `invoice-items.csv`
+
+### `invoice.csv` required fields
+
+- `subject_id` (*Fakturoid*): An ID of contact
+- `fwr_id`: Invoice ID (only in terms of this file)
+
+### `invoice-items.csv` required fields
+
+- `name` (*Fakturoid*): Description of item
+- `quantity` (*Fakturoid*): Quantity
+- `unit_price` (*Fakturoid*): Unit price for item
+- `vat_rate` (*Fakturoid*): VAR rate (`0` for non payers)
+- `fwr_invoice_id`: Invoice ID (foreign key) from `invoice.csv` file
 
 ## Output
 
