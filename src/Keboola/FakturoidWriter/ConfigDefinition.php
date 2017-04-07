@@ -14,6 +14,18 @@ class ConfigDefinition implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('email')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('#token')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('slug')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
             ->end()
         ;
 
