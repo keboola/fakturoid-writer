@@ -78,5 +78,4 @@ class Writer
 
         return $this->apiClient;
     }
-
 }

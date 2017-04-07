@@ -26,7 +26,7 @@ Two files at `/data/in/tables` path:
 - `name` (*Fakturoid*): Description of item
 - `quantity` (*Fakturoid*): Quantity
 - `unit_price` (*Fakturoid*): Unit price for item
-- `vat_rate` (*Fakturoid*): VAR rate (`0` for non payers)
+- `vat_rate` (*Fakturoid*): VAT rate (`0` for non payers)
 - `fwr_invoice_id`: Invoice ID (foreign key) from `invoice.csv` file
 
 ## Output
