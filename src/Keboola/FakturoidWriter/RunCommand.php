@@ -18,12 +18,12 @@ class RunCommand extends Command
     protected function configure()
     {
         $this->setName('run');
-        $this->setDescription('Runs extractor');
+        $this->setDescription('Runs writer');
         $this->addArgument('data directory', InputArgument::REQUIRED, 'Data directory');
         $this->addOption('test-mode', null, null, 'Test mode');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $consoleOutput)
     {
         $dataDirectory = $input->getArgument('data directory');
         $testMode = $input->getOption('test-mode');
@@ -36,8 +36,9 @@ class RunCommand extends Command
                 throw new \Exception('Config file not found at path ' . $configFile);
             }
 
-            $outputPath = $dataDirectory . '/in/tables';
-            (new Filesystem())->mkdir($outputPath);
+            $inputPath = $dataDirectory . '/in/tables';
+            $outputPath = $dataDirectory . '/out/tables';
+            (new Filesystem())->mkdir([$inputPath, $outputPath]);
 
             $jsonDecode = new JsonDecode(true);
             $config = $jsonDecode->decode(
@@ -45,15 +46,15 @@ class RunCommand extends Command
                 JsonEncoder::FORMAT
             );
 
-            $extractor = new Writer($config, $output);
+            $extractor = new Writer($config, $inputPath, $outputPath, $consoleOutput);
             $action = $config['action'] ?? 'run';
 
             switch ($action) {
                 case 'run':
-                    $extractor->actionRun($outputPath);
+                    $extractor->actionRun();
                     break;
                 default:
-                    $output->writeln('Action "' . $action . '" not supported');
+                    $consoleOutput->writeln('Action "' . $action . '" not supported');
                     break;
             }
             return 0;
@@ -61,7 +62,7 @@ class RunCommand extends Command
             if ($testMode === true) {
                 throw $e;
             }
-            $output->writeln($e->getMessage());
+            $consoleOutput->writeln($e->getMessage());
             return 1;
         } catch (\Exception $e) {
             if ($testMode === true) {
