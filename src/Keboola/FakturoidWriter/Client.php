@@ -16,7 +16,6 @@ class Client
                 $parameters['email'],
                 $parameters['#token']
             ],
-            'http_errors' => false,
             'headers' => [
                 'User-Agent' => 'Keboola Fakturoid Writer/' . \GuzzleHttp\default_user_agent()
             ],
