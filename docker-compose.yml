@@ -21,8 +21,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-tests
-    links:
-      - dynamodb
     command: >
              sh -c '
              && ./tests.sh
