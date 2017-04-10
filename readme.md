@@ -56,7 +56,7 @@ Check **Invoices** section at Fakturoid API docs:
 
 Sample:
 
-|...|fwr_invoice_id|name|quantity|unit_price|var_price|...|
+|...|fwr_invoice_id|name|quantity|unit_price|vat_rate|...|
 |---|---|---|---|---|---|---|
 |...|1|Item 1|1|100|0|...|
 |...|2|Item 1|1|100|0|...|
