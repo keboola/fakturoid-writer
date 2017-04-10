@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile-tests
     command: >
              sh -c '
-             && ./tests.sh
+             ./tests.sh
              && ./vendor/bin/test-reporter
              '
     volumes:
