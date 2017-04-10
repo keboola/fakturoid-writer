@@ -83,4 +83,9 @@ class RunCommand extends Command
             return 2;
         }
     }
+
+    public function setApiClient(Client $apiClient)
+    {
+        $this->apiClient = $apiClient;
+    }
 }
