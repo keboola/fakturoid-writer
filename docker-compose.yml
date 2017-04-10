@@ -16,3 +16,17 @@ services:
       context: .
       dockerfile: Dockerfile-tests
     command: sh -c './tests.sh'
+
+  app-tests-with-report:
+    build:
+      context: .
+      dockerfile: Dockerfile-tests
+    links:
+      - dynamodb
+    command: >
+             sh -c '
+             && ./tests.sh
+             && ./vendor/bin/test-reporter
+             '
+    volumes:
+      - ./.git:/code/.git

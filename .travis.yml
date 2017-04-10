@@ -15,7 +15,8 @@ script:
   - >
     docker-compose run
     --rm
-    app-tests
+    -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
+    app-tests-with-report
 
 after_success:
   - docker images

@@ -1,6 +1,8 @@
 # Fakturoid Writer
 
 [![Build Status](https://travis-ci.org/keboola/fakturoid-writer.svg?branch=master)](https://travis-ci.org/keboola/fakturoid-writer)
+[![Code Climate](https://codeclimate.com/github/keboola/fakturoid-writer/badges/gpa.svg)](https://codeclimate.com/github/keboola/fakturoid-writer)
+[![Test Coverage](https://codeclimate.com/github/keboola/fakturoid-writer/badges/coverage.svg)](https://codeclimate.com/github/keboola/fakturoid-writer/coverage)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/keboola/fakturoid-writer/blob/master/LICENSE.md)
 
 Custom Docker application for pushing invoicing data to Fakturoid.
