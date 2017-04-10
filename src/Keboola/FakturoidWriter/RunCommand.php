@@ -2,6 +2,7 @@
 
 namespace Keboola\FakturoidWriter;
 
+use GuzzleHttp\Exception\BadResponseException;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
@@ -67,7 +68,7 @@ class RunCommand extends Command
                     break;
             }
             return 0;
-        } catch (InvalidConfigurationException | UserException $e) {
+        } catch (InvalidConfigurationException | UserException | BadResponseException $e) {
             if ($testMode === true) {
                 throw $e;
             }

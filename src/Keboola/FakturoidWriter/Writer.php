@@ -40,16 +40,12 @@ class Writer
         $fakturoidInvoiceFile->writeRow(['data']);
 
         foreach ($requestCreator->create() as $body) {
-            try {
-                $result = $this->apiClient->getGuzzleClient()->request('POST', 'invoices.json', [
-                    'json' => $body
-                ]);
-                $fakturoidInvoiceFile->writeRow([
-                    $result->getBody()->getContents()
-                ]);
-            } catch (\Exception $e) {
-                echo $e->getMessage();
-            }
+            $result = $this->apiClient->getGuzzleClient()->request('POST', 'invoices.json', [
+                'json' => $body
+            ]);
+            $fakturoidInvoiceFile->writeRow([
+                $result->getBody()->getContents()
+            ]);
         }
     }
 }
