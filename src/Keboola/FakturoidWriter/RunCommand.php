@@ -15,6 +15,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class RunCommand extends Command
 {
+    private $apiClient;
+
     protected function configure()
     {
         $this->setName('run');
@@ -46,7 +48,14 @@ class RunCommand extends Command
                 JsonEncoder::FORMAT
             );
 
-            $extractor = new Writer($config, $inputPath, $outputPath, $consoleOutput);
+            $parameters = new ConfigParameters($config);
+
+            // allows custom API client
+            if ($this->apiClient === null) {
+                $this->apiClient = new Client($parameters->getParameters());
+            }
+
+            $extractor = new Writer($this->apiClient, $inputPath, $outputPath, $consoleOutput);
             $action = $config['action'] ?? 'run';
 
             switch ($action) {
