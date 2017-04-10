@@ -35,6 +35,13 @@ Two files at `/data/in/tables` path:
 
 ### `invoice.csv`
 
+Sample:
+
+|...|fwr_id|subject_id|...|
+|---|---|---|---|
+|...|1|1001|...|
+|...|2|1002|...|
+
 Required fields:
 
 - `subject_id` (*Fakturoid*): An ID of contact
@@ -45,20 +52,35 @@ Check **Invoices** section at Fakturoid API docs:
 
 ### `invoice-items.csv`
 
+Sample:
+
+|...|fwr_invoice_id|name|quantity|unit_price|var_price|...|
+|---|---|---|---|---|---|---|
+|...|1|Item 1|1|100|0|...|
+|...|2|Item 1|1|100|0|...|
+|...|2|Item 2|3|50|0|...|
+
 Required fields:
 
+- `fwr_invoice_id`: Invoice ID (foreign key); `fwr_id` field value from `invoice.csv` file
 - `name` (*Fakturoid*): Description of item
 - `quantity` (*Fakturoid*): Quantity
 - `unit_price` (*Fakturoid*): Unit price for item
 - `vat_rate` (*Fakturoid*): VAT rate (`0` for non payers)
-- `fwr_invoice_id`: Invoice ID (foreign key); `fwr_id` field value from `invoice.csv` file
 
 Check **Lines** section at Fakturoid API docs:
 [http://docs.fakturoid.apiary.io/#reference/lines/novy-kontakt](http://docs.fakturoid.apiary.io/#reference/lines/novy-kontakt)
 
 ## Output
 
-TBD
+One file at `/data/out/tables` path is exported. Each row contains full response from Fakturoid.
+
+Sample:
+
+|data|
+|---|
+|{""id"":3701,""subject_id"":1001,""items"":[{""name"":""Item 1""}]}|
+|...|
 
 ## Development
 
