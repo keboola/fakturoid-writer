@@ -7,7 +7,24 @@ Custom Docker application for pushing invoicing data to Fakturoid.
 
 ## Configuration
 
-Sample configuration and its description can be found [here](/config.md).
+### Sample
+
+```json
+{
+    "parameters": {
+        "email": "your@email.com",
+        "#token": "token",
+        "slug": "slug"
+    }
+}
+```
+*Note: When copying to UI, select only content of `parameters` section
+
+### Description of `parameters`
+
+- `email`: Email
+- `#token`: Token. Encrypted.
+- `slug`: Slug; Account name
 
 ## Input
 
