@@ -61,20 +61,12 @@ JSON
         $handler = HandlerStack::create($mock);
         $guzzleClient = new GuzzleClient(['handler' => $handler]);
 
-        $apiClient = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $apiClient->expects($this->any())
-            ->method('getGuzzleClient')
-            ->will($this->returnValue($guzzleClient));
-
         $application = new Application;
         $application->add(new RunCommand);
 
         /** @var RunCommand $command */
         $command = $application->find('run');
-        $command->setApiClient($apiClient);
+        $command->setApiClient($guzzleClient);
         $commandTester = new CommandTester($command);
 
         $exitCode = $commandTester->execute([
