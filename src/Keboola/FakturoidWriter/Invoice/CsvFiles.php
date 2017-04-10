@@ -12,6 +12,8 @@ class CsvFiles
 
     const FILE_INVOICE_ITEMS = 'invoice-items.csv';
 
+    const FILE_FAKTUROID_INVOICE = 'fakturoid-invoice.csv';
+
     private $inputPath;
 
     private $outputPath;
@@ -19,6 +21,8 @@ class CsvFiles
     private $sourceInvoiceFile;
 
     private $sourceInvoiceItemsFile;
+
+    private $fakturoidInvoiceFile;
 
     public function __construct(string $inputPath, string $outputPath)
     {
@@ -34,6 +38,8 @@ class CsvFiles
 
         $this->sourceInvoiceFile = new CsvFile($this->inputPath . '/' . self::FILE_INVOICE);
         $this->sourceInvoiceItemsFile = new CsvFile($this->inputPath . '/' . self::FILE_INVOICE_ITEMS);
+
+        $this->fakturoidInvoiceFile = new CsvFile($this->outputPath . '/' . self::FILE_FAKTUROID_INVOICE);
     }
 
     public function getSourceInvoiceFile(): CsvFile
@@ -44,6 +50,11 @@ class CsvFiles
     public function getSourceInvoiceItemsFile(): CsvFile
     {
         return $this->sourceInvoiceItemsFile;
+    }
+
+    public function getFakturoidInvoiceFile(): CsvFile
+    {
+        return $this->fakturoidInvoiceFile;
     }
 
     public function validate()
