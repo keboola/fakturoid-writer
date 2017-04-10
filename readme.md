@@ -18,7 +18,7 @@ Custom Docker application for pushing invoicing data to Fakturoid.
     }
 }
 ```
-*Note: When copying to UI, select only content of `parameters` section
+**Note: When copying to UI, select only content of `parameters` section.**
 
 ### Description of `parameters`
 
