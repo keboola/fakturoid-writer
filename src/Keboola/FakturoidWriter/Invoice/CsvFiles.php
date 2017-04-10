@@ -70,10 +70,8 @@ class CsvFiles
 
         if (!empty($diff)) {
             throw new UserException(
-                'Please provide all required fields in '
-                . $file->getFilename()
-                . ' table. Missing fields: '
-                . implode(', ', $diff)
+                'Please provide all required fields in ' . $file->getFilename()
+                . ' file. Missing fields: ' . implode(', ', $diff)
             );
         }
 
@@ -82,7 +80,9 @@ class CsvFiles
                 $actualFields = array_combine($header, $line);
                 foreach ($requiredFields as $field) {
                     if (trim($actualFields[$field]) === '') {
-                        throw new UserException('Field ' . $field . ' cannot be empty');
+                        throw new UserException(
+                            'Field ' . $field . ' in ' . $file->getFilename() . ' file cannot be empty'
+                        );
                     }
                 }
             }
