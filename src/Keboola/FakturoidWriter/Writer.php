@@ -41,6 +41,7 @@ class Writer
         $fakturoidInvoiceFile = $invoiceCsvFiles->getFakturoidInvoiceFile();
         $fakturoidInvoiceFile->writeRow(['data']);
 
+        $numOfErrors = 0;
         foreach ($requestCreator->create() as $body) {
             try {
                 $result = $this->apiClient->request('POST', 'invoices.json', [
@@ -50,8 +51,10 @@ class Writer
                     $result->getBody()->getContents()
                 ]);
             } catch (BadResponseException $e) {
+                $numOfErrors++;
                 $this->consoleOutput->writeln($e->getMessage());
             }
         }
+        $this->consoleOutput->writeln('Processing done. Number of errors: ' . $numOfErrors);
     }
 }

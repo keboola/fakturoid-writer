@@ -84,7 +84,8 @@ JSON
 
         $expectedConsoleOutput = <<<TXT
 Client error: `POST invoices.json` resulted in a `422 Unprocessable Entity` response:
-{"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}\n\n
+{"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}\n
+Processing done. Number of errors: 1\n
 TXT;
         $this->assertSame($expectedConsoleOutput, $commandTester->getDisplay());
 

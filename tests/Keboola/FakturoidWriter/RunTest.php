@@ -75,6 +75,12 @@ JSON
         ]);
 
         $this->assertSame(0, $exitCode);
+
+        $expectedConsoleOutput = <<<TXT
+Processing done. Number of errors: 0\n
+TXT;
+        $this->assertSame($expectedConsoleOutput, $commandTester->getDisplay());
+
         $expectedFile = $this->dataDir . '/out/tables/' . CsvFiles::FILE_FAKTUROID_INVOICE;
         $this->assertFileExists($expectedFile);
 
