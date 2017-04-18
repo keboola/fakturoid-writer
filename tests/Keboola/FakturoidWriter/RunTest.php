@@ -43,7 +43,7 @@ CSV
         );
     }
 
-    public function testMissingRequiredFieldInInputFile()
+    public function testRun()
     {
         $mock = new MockHandler([
             // first invoice
