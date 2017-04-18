@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Keboola\FakturoidWriter\Invoice\Creator;
 use Keboola\FakturoidWriter\Invoice\CsvFiles;
 use Symfony\Component\Console\Output\OutputInterface;
+use GuzzleHttp\Exception\BadResponseException;
 
 class Writer
 {
@@ -41,12 +42,16 @@ class Writer
         $fakturoidInvoiceFile->writeRow(['data']);
 
         foreach ($requestCreator->create() as $body) {
-            $result = $this->apiClient->request('POST', 'invoices.json', [
-                'json' => $body
-            ]);
-            $fakturoidInvoiceFile->writeRow([
-                $result->getBody()->getContents()
-            ]);
+            try {
+                $result = $this->apiClient->request('POST', 'invoices.json', [
+                    'json' => $body
+                ]);
+                $fakturoidInvoiceFile->writeRow([
+                    $result->getBody()->getContents()
+                ]);
+            } catch (BadResponseException $e) {
+                $this->consoleOutput->writeln($e->getMessage());
+            }
         }
     }
 }
