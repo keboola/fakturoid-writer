@@ -10,10 +10,10 @@ use Keboola\FakturoidWriter\Invoice\CsvFiles;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class RunTest extends ExtractorTestCase
+class RunWithPartialErrorsTest extends ExtractorTestCase
 {
     /** @var string */
-    protected $dataDir = '/tmp/run-test';
+    protected $dataDir = '/tmp/run-test-partial-errors';
 
     protected function setUp()
     {
@@ -35,6 +35,7 @@ JSON
 "fwr_id","subject_id"
 "10","1000"
 "20","1001"
+"30","1002"
 CSV
         );
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice-items.csv', <<<CSV
@@ -49,6 +50,11 @@ CSV
             // first invoice
             new Response(201, [], <<<JSON
 {"id":3701,"number":"2017-0001","subject_id":1000,"items":[{"name":"Item 1"}]}
+JSON
+            ),
+            // error
+            new Response(422, [], <<<JSON
+{"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}
 JSON
             ),
             // second invoice
@@ -77,7 +83,9 @@ JSON
         $this->assertSame(0, $exitCode);
 
         $expectedConsoleOutput = <<<TXT
-Processing done. Number of errors: 0\n
+Client error: `POST invoices.json` resulted in a `422 Unprocessable Entity` response:
+{"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}\n
+Processing done. Number of errors: 1\n
 TXT;
         $this->assertSame($expectedConsoleOutput, $commandTester->getDisplay());
 

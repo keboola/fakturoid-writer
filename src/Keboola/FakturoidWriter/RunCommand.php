@@ -69,7 +69,7 @@ class RunCommand extends Command
                     break;
             }
             return 0;
-        } catch (InvalidConfigurationException | UserException | BadResponseException $e) {
+        } catch (InvalidConfigurationException | UserException $e) {
             if ($testMode === true) {
                 throw $e;
             }
