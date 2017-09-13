@@ -2,31 +2,88 @@ sudo: required
 
 language: bash
 
+stages:
+  - build-test
+  - build-test-and-push-latest
+  - run-test-job
+  - tag-and-deploy
+
 services:
   - docker
 
 before_script:
   - docker -v
   - docker-compose -v
-  - docker-compose build app
-  - docker-compose build app-tests-with-report
 
-script:
-  - >
-    docker-compose run
-    --rm
-    -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
-    app-tests-with-report
+jobs:
+  include:
+    - stage: build-test
+      script:
+        - docker-compose build app
+        - docker-compose build app-tests-with-report
+        - >-
+          docker-compose run
+          --rm
+          -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
+          app-tests-with-report
+      if: branch != master AND NOT tag IS present
 
-after_success:
-  - docker images
+    - stage: build-test-and-push-latest
+      script:
+        - docker pull quay.io/keboola/developer-portal-cli-v2:latest
+        - docker-compose build app
+        - docker-compose build app-tests-with-report
+        - >-
+          docker-compose run
+          --rm
+          -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
+          app-tests-with-report
+        - >-
+          export REPOSITORY=`docker run --rm
+          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_URL=$DP_URL
+          quay.io/keboola/developer-portal-cli-v2:latest ecr:get-repository $DP_VENDOR_ID $DP_APP_ID`
+        - docker tag keboola/fakturoid-writer $REPOSITORY:latest
+        - >-
+          eval $(docker run --rm
+          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_URL=$DP_URL
+          quay.io/keboola/developer-portal-cli-v2:latest ecr:get-login $DP_VENDOR_ID $DP_APP_ID)
+        - docker push $REPOSITORY:latest
+      if: branch = master OR tag IS present
 
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: ./deploy.sh
-  on:
-    tags: true
+    - stage: run-test-job
+      script:
+        - echo "TODO"
+      if: branch = master OR tag IS present
+
+    - stage: tag-and-deploy
+      script:
+        - docker pull quay.io/keboola/developer-portal-cli-v2:latest
+        - >-
+          eval $(docker run --rm
+          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_URL=$DP_URL
+          quay.io/keboola/developer-portal-cli-v2:latest ecr:get-login $DP_VENDOR_ID $DP_APP_ID)
+        - >-
+          export REPOSITORY=`docker run --rm
+          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_URL=$DP_URL
+          quay.io/keboola/developer-portal-cli-v2:latest ecr:get-repository $DP_VENDOR_ID $DP_APP_ID`
+        - docker pull $REPOSITORY:latest
+        - docker tag $REPOSITORY:latest $REPOSITORY:$TRAVIS_TAG
+        - docker push $REPOSITORY:$TRAVIS_TAG
+        - >-
+          docker run --rm
+          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_URL=$DP_URL
+          quay.io/keboola/developer-portal-cli-v2:latest update-app-repository $DP_VENDOR_ID $DP_APP_ID $TRAVIS_TAG
+      if: tag IS present
 
 notifications:
   slack:
