@@ -2,6 +2,10 @@ sudo: required
 
 language: bash
 
+env:
+  - DP_VENDOR_ID="keboola"
+  - DP_APP_ID="keboola.fakturoid-writer"
+
 stages:
   - build-test
   - build-test-and-push-latest
