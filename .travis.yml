@@ -14,6 +14,7 @@ services:
 before_script:
   - docker -v
   - docker-compose -v
+  - set -e
 
 jobs:
   include:
