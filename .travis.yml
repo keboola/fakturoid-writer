@@ -45,14 +45,14 @@ jobs:
           -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
           -e KBC_DEVELOPERPORTAL_URL=$DP_URL
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-repository $DP_VENDOR_ID $DP_APP_ID`
-        - docker tag keboola/fakturoid-writer $REPOSITORY:latest
+        - docker tag keboola/fakturoid-writer $REPOSITORY:$TRAVIS_COMMIT
         - >-
           eval $(docker run --rm
           -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
           -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
           -e KBC_DEVELOPERPORTAL_URL=$DP_URL
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-login $DP_VENDOR_ID $DP_APP_ID)
-        - docker push $REPOSITORY:latest
+        - docker push $REPOSITORY:$TRAVIS_COMMIT
       if: branch = master OR tag IS present
 
     - stage: run-test-job
@@ -75,8 +75,8 @@ jobs:
           -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
           -e KBC_DEVELOPERPORTAL_URL=$DP_URL
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-repository $DP_VENDOR_ID $DP_APP_ID`
-        - docker pull $REPOSITORY:latest
-        - docker tag $REPOSITORY:latest $REPOSITORY:$TRAVIS_TAG
+        - docker pull $REPOSITORY:$TRAVIS_COMMIT
+        - docker tag $REPOSITORY:$TRAVIS_COMMIT $REPOSITORY:$TRAVIS_TAG
         - docker push $REPOSITORY:$TRAVIS_TAG
         - >-
           docker run --rm
