@@ -4,9 +4,9 @@ language: bash
 
 stages:
   - build-test
-  - build-test-and-push-latest
+  - build-test-and-push
   - run-test-job
-  - tag-and-deploy
+  - pull-tag-and-deploy
 
 services:
   - docker
@@ -29,7 +29,7 @@ jobs:
           app-tests-with-report
       if: branch != master AND NOT tag IS present
 
-    - stage: build-test-and-push-latest
+    - stage: build-test-and-push
       script:
         - docker pull quay.io/keboola/developer-portal-cli-v2:latest
         - docker-compose build app
@@ -58,7 +58,7 @@ jobs:
         - echo "TODO"
       if: branch = master OR tag IS present
 
-    - stage: tag-and-deploy
+    - stage: pull-tag-and-deploy
       script:
         - docker pull quay.io/keboola/developer-portal-cli-v2:latest
         - >-
