@@ -1,12 +1,11 @@
 sudo: required
 
-language: bash
+env:
+  global:
+    - DP_VENDOR_ID="keboola"
+    - DP_APP_ID="keboola.fakturoid-writer"
 
-stages:
-  - build-test
-  - build-test-and-push
-  - run-test-job
-  - pull-tag-and-deploy
+language: bash
 
 services:
   - docker
@@ -18,18 +17,18 @@ before_script:
 
 jobs:
   include:
-    - stage: build-test
+    - stage: build and test
       script:
         - docker-compose build app
         - docker-compose build app-tests-with-report
         - >-
           docker-compose run
           --rm
-          -e CODECLIMATE_REPO_TOKEN
+          -e CC_TEST_REPORTER_ID
           app-tests-with-report
       if: branch != master AND NOT tag IS present
 
-    - stage: build-test-and-push
+    - stage: build, test and push
       script:
         - docker pull quay.io/keboola/developer-portal-cli-v2:latest
         - docker-compose build app
@@ -37,7 +36,7 @@ jobs:
         - >-
           docker-compose run
           --rm
-          -e CODECLIMATE_REPO_TOKEN
+          -e CC_TEST_REPORTER_ID
           app-tests-with-report
         - >-
           export REPOSITORY=`docker run --rm
@@ -53,12 +52,12 @@ jobs:
         - docker push $REPOSITORY:$TRAVIS_COMMIT
       if: branch = master OR tag IS present
 
-    - stage: run-test-job
+    - stage: run test job
       script:
         - echo "TODO"
       if: branch = master OR tag IS present
 
-    - stage: pull-tag-and-deploy
+    - stage: pull image, tag and deploy
       script:
         - docker pull quay.io/keboola/developer-portal-cli-v2:latest
         - >-
