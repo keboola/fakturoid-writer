@@ -26,6 +26,10 @@ class ConfigDefinition implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
+                ->enumNode('order')
+                    ->values(['asc', 'desc'])
+                    ->defaultValue('asc')
+                ->end()
             ->end()
         ;
 
