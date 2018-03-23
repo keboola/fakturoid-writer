@@ -16,7 +16,8 @@ Custom Docker application for pushing invoicing data to Fakturoid.
     "parameters": {
         "email": "your@email.com",
         "#token": "token",
-        "slug": "slug"
+        "slug": "slug",
+        "order": "asc"
     }
 }
 ```
@@ -42,8 +43,8 @@ Sample:
 
 |...|fwr_id|fwr_order|subject_id|...|
 |---|---|---|---|---|
-|...|1|1|1001|...|
-|...|2|2|1002|...|
+|...|11|1|1001|...|
+|...|12|2|1002|...|
 
 Required fields:
 
@@ -60,9 +61,9 @@ Sample:
 
 |...|fwr_invoice_id|name|quantity|unit_price|vat_rate|...|
 |---|---|---|---|---|---|---|
-|...|1|Item 1|1|100|0|...|
-|...|2|Item 1|1|100|0|...|
-|...|2|Item 2|3|50|0|...|
+|...|11|Item 1|1|100|0|...|
+|...|12|Item 1|1|100|0|...|
+|...|12|Item 2|3|50|0|...|
 
 Required fields:
 
