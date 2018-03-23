@@ -57,7 +57,7 @@ class RunCommand extends Command
                 $this->createApiClient($parameters->getParameters());
             }
 
-            $extractor = new Writer($this->apiClient, $inputPath, $outputPath, $consoleOutput);
+            $extractor = new Writer($this->apiClient, $parameters->getParameters(), $inputPath, $outputPath, $consoleOutput);
             $action = $config['action'] ?? 'run';
 
             switch ($action) {
