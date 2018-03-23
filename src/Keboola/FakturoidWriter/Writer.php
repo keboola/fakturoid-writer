@@ -22,10 +22,12 @@ class Writer
     /** @var Client */
     private $apiClient;
 
-    public function __construct(Client $apiClient, string $inputPath, string $outputPath, OutputInterface $output)
+    private $parameters;
+
+    public function __construct(Client $apiClient, array $parameters, string $inputPath, string $outputPath, OutputInterface $output)
     {
         $this->apiClient = $apiClient;
-
+        $this->parameters = $parameters;
         $this->inputPath = $inputPath;
         $this->outputPath = $outputPath;
         $this->consoleOutput = $output;
@@ -36,13 +38,13 @@ class Writer
         $invoiceCsvFiles = new CsvFiles($this->inputPath, $this->outputPath);
         $invoiceCsvFiles->validate();
 
-        $requestCreator = new Creator($invoiceCsvFiles);
+        $invoiceCreator = new Creator($invoiceCsvFiles, $this->parameters['order']);
 
         $fakturoidInvoiceFile = $invoiceCsvFiles->getFakturoidInvoiceFile();
         $fakturoidInvoiceFile->writeRow(['data']);
 
         $numOfErrors = 0;
-        foreach ($requestCreator->create() as $body) {
+        foreach ($invoiceCreator->create() as $body) {
             try {
                 $result = $this->apiClient->request('POST', 'invoices.json', [
                     'json' => $body

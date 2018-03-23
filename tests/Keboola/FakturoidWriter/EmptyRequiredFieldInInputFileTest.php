@@ -26,8 +26,8 @@ JSON
         );
 
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice.csv', <<<CSV
-"fwr_id","subject_id"
-"1",""
+"fwr_id","fwr_order","subject_id"
+"1","1",""
 CSV
         );
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice-items.csv', <<<CSV

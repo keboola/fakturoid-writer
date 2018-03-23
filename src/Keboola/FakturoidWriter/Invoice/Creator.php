@@ -6,34 +6,50 @@ class Creator
 {
     private $csvFiles;
 
-    public function __construct(CsvFiles $csvFiles)
+    private $sort;
+
+    public function __construct(CsvFiles $csvFiles, string $sort)
     {
         $this->csvFiles = $csvFiles;
+        $this->sort = $sort;
     }
 
     public function create(): array
     {
-        $bodies = [];
         $invoiceFileHeader = $this->csvFiles->getSourceInvoiceFile()->getHeader();
         $invoiceItemFileHeader = $this->csvFiles->getSourceInvoiceItemsFile()->getHeader();
 
+        $invoices = [];
+        $invoiceIdAndOrder = [];
+
         foreach ($this->csvFiles->getSourceInvoiceFile() as $i => $invoice) {
             if ($i !== 0) {
-                $invoiceVal = array_combine($invoiceFileHeader, $invoice);
-                $invoiceId = $invoiceVal['fwr_id'];
-                unset($invoiceVal['fwr_id']);
-                $bodies[$invoiceId] = $invoiceVal;
+                $invoiceValue = array_combine($invoiceFileHeader, $invoice);
+                $fwrInvoiceId = $invoiceValue['fwr_id'];
+                $fwrOrder = $invoiceValue['fwr_order'];
+                $invoiceIdAndOrder[$fwrOrder] = $fwrInvoiceId;
+                unset($invoiceValue['fwr_id']);
+                unset($invoiceValue['fwr_order']);
+                $invoices[$fwrInvoiceId] = $invoiceValue;
             }
         }
 
         foreach ($this->csvFiles->getSourceInvoiceItemsFile() as $j => $invoiceItem) {
             if ($j !== 0) {
-                $invoiceItemVal = array_combine($invoiceItemFileHeader, $invoiceItem);
-                $invoiceId = $invoiceItemVal['fwr_invoice_id'];
-                unset($invoiceItemVal['fwr_invoice_id']);
-                $bodies[$invoiceId]['lines'][] = $invoiceItemVal;
+                $invoiceItemValue = array_combine($invoiceItemFileHeader, $invoiceItem);
+                $fwrInvoiceId = $invoiceItemValue['fwr_invoice_id'];
+                unset($invoiceItemValue['fwr_invoice_id']);
+                $invoices[$fwrInvoiceId]['lines'][] = $invoiceItemValue;
             }
         }
+
+        $bodies = [];
+
+        foreach ($invoiceIdAndOrder as $order => $invoiceId) {
+            $bodies[$order] = $invoices[$invoiceId];
+        }
+
+        $this->sort === 'asc' ? ksort($bodies) : krsort($bodies);
 
         return $bodies;
     }

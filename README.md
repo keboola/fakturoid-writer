@@ -27,6 +27,7 @@ Custom Docker application for pushing invoicing data to Fakturoid.
 - `email`: Email
 - `#token`: Token. Encrypted.
 - `slug`: Slug; Account name
+- `order`: If order items `desc` or `asc` by `fwr_order` field (default to `asc`)
 
 ## Input
 
@@ -39,15 +40,16 @@ Two files at `/data/in/tables` path:
 
 Sample:
 
-|...|fwr_id|subject_id|...|
-|---|---|---|---|
-|...|1|1001|...|
-|...|2|1002|...|
+|...|fwr_id|fwr_order|subject_id|...|
+|---|---|---|---|---|
+|...|1|1|1001|...|
+|...|2|2|1002|...|
 
 Required fields:
 
 - `subject_id` (*Fakturoid*): An ID of contact
 - `fwr_id`: Invoice ID (only in terms of this file)
+- `fwr_order`: Order (only in terms of this file). Invoices will be sorted and send to API in by this field.
 
 Check **Invoices** section at Fakturoid API docs:
 [http://docs.fakturoid.apiary.io/#reference/invoices/novy-kontakt](http://docs.fakturoid.apiary.io/#reference/invoices/novy-kontakt)

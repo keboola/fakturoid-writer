@@ -62,6 +62,7 @@ class CsvFiles
         $this->validateItem($this->sourceInvoiceFile, [
             'subject_id',
             'fwr_id',
+            'fwr_order',
         ]);
 
         $this->validateItem($this->sourceInvoiceItemsFile, [
