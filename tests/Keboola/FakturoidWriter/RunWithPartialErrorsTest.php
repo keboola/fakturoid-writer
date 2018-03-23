@@ -32,10 +32,10 @@ JSON
 
         // content of next 2 files doesn't matter
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice.csv', <<<CSV
-"fwr_id","subject_id"
-"10","1000"
-"20","1001"
-"30","1002"
+"fwr_id","fwr_order","subject_id"
+"10","1","1000"
+"20","2","1001"
+"30","3","1002"
 CSV
         );
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice-items.csv', <<<CSV

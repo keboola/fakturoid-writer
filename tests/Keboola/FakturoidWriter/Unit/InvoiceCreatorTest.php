@@ -21,9 +21,9 @@ class InvoiceCreatorTest extends TestCase
         $this->fs->mkdir($this->dataDir);
 
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice.csv', <<<CSV
-"fwr_id","subject_id"
-"10","1000"
-"20","1001"
+"fwr_id","fwr_order","subject_id"
+"10","2","1000"
+"20","1","1001"
 CSV
         );
         $this->fs->dumpFile($this->dataDir . '/in/tables/invoice-items.csv', <<<CSV
@@ -45,23 +45,12 @@ CSV
         $csvFiles = new CsvFiles($this->dataDir . '/in/tables', $this->dataDir . '/out/tables');
         $csvFiles->validate();
 
-        $creator = new Creator($csvFiles);
+        $creator = new Creator($csvFiles, 'asc');
         $bodies = $creator->create();
 
         $expectedJson = <<<JSON
 {
-    "10": {
-        "subject_id": "1000",
-        "lines": [
-            {
-                "name": "item 1",
-                "quantity": "1",
-                "unit_price": "10",
-                "vat_rate": "0"
-            }
-        ]
-    },
-    "20": {
+    "1": {
         "subject_id": "1001",
         "lines": [
             {
@@ -74,6 +63,17 @@ CSV
                 "name": "item 2",
                 "quantity": "3",
                 "unit_price": "20",
+                "vat_rate": "0"
+            }
+        ]
+    },
+    "2": {
+        "subject_id": "1000",
+        "lines": [
+            {
+                "name": "item 1",
+                "quantity": "1",
+                "unit_price": "10",
                 "vat_rate": "0"
             }
         ]
