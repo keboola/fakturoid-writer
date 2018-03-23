@@ -25,7 +25,7 @@ jobs:
         - >-
           docker-compose run
           --rm
-          -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
+          -e CODECLIMATE_REPO_TOKEN
           app-tests-with-report
       if: branch != master AND NOT tag IS present
 
@@ -37,18 +37,18 @@ jobs:
         - >-
           docker-compose run
           --rm
-          -e CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN
+          -e CODECLIMATE_REPO_TOKEN
           app-tests-with-report
         - >-
           export REPOSITORY=`docker run --rm
-          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
-          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-repository $DP_VENDOR_ID $DP_APP_ID`
         - docker tag keboola/fakturoid-writer $REPOSITORY:$TRAVIS_COMMIT
         - >-
           eval $(docker run --rm
-          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
-          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-login $DP_VENDOR_ID $DP_APP_ID)
         - docker push $REPOSITORY:$TRAVIS_COMMIT
       if: branch = master OR tag IS present
@@ -63,21 +63,21 @@ jobs:
         - docker pull quay.io/keboola/developer-portal-cli-v2:latest
         - >-
           eval $(docker run --rm
-          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
-          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-login $DP_VENDOR_ID $DP_APP_ID)
         - >-
           export REPOSITORY=`docker run --rm
-          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
-          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD
           quay.io/keboola/developer-portal-cli-v2:latest ecr:get-repository $DP_VENDOR_ID $DP_APP_ID`
         - docker pull $REPOSITORY:$TRAVIS_COMMIT
         - docker tag $REPOSITORY:$TRAVIS_COMMIT $REPOSITORY:$TRAVIS_TAG
         - docker push $REPOSITORY:$TRAVIS_TAG
         - >-
           docker run --rm
-          -e KBC_DEVELOPERPORTAL_USERNAME=$DP_USERNAME
-          -e KBC_DEVELOPERPORTAL_PASSWORD=$DP_PASSWORD
+          -e KBC_DEVELOPERPORTAL_USERNAME
+          -e KBC_DEVELOPERPORTAL_PASSWORD
           quay.io/keboola/developer-portal-cli-v2:latest update-app-repository $DP_VENDOR_ID $DP_APP_ID $TRAVIS_TAG
       if: tag IS present
 
