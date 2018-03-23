@@ -38,13 +38,13 @@ class Writer
         $invoiceCsvFiles = new CsvFiles($this->inputPath, $this->outputPath);
         $invoiceCsvFiles->validate();
 
-        $requestCreator = new Creator($invoiceCsvFiles, $this->parameters['order']);
+        $invoiceCreator = new Creator($invoiceCsvFiles, $this->parameters['order']);
 
         $fakturoidInvoiceFile = $invoiceCsvFiles->getFakturoidInvoiceFile();
         $fakturoidInvoiceFile->writeRow(['data']);
 
         $numOfErrors = 0;
-        foreach ($requestCreator->create() as $body) {
+        foreach ($invoiceCreator->create() as $body) {
             try {
                 $result = $this->apiClient->request('POST', 'invoices.json', [
                     'json' => $body
