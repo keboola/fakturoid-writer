@@ -7,10 +7,10 @@ use Keboola\FakturoidWriter\Invoice\CsvFiles;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class InvoiceCreatorTest extends TestCase
+class InvoiceCreatorDescTest extends TestCase
 {
     /** @var string */
-    protected $dataDir = '/tmp/invoice-creator-test';
+    protected $dataDir = '/tmp/invoice-creator-test-desc';
 
     private $fs;
 
@@ -45,11 +45,22 @@ CSV
         $csvFiles = new CsvFiles($this->dataDir . '/in/tables', $this->dataDir . '/out/tables');
         $csvFiles->validate();
 
-        $creator = new Creator($csvFiles, 'asc');
+        $creator = new Creator($csvFiles, 'desc');
         $bodies = $creator->create();
 
         $expectedJson = <<<JSON
 {
+    "2": {
+        "subject_id": "1000",
+        "lines": [
+            {
+                "name": "item 1",
+                "quantity": "1",
+                "unit_price": "10",
+                "vat_rate": "0"
+            }
+        ]
+    },
     "1": {
         "subject_id": "1001",
         "lines": [
@@ -63,17 +74,6 @@ CSV
                 "name": "item 2",
                 "quantity": "3",
                 "unit_price": "20",
-                "vat_rate": "0"
-            }
-        ]
-    },
-    "2": {
-        "subject_id": "1000",
-        "lines": [
-            {
-                "name": "item 1",
-                "quantity": "1",
-                "unit_price": "10",
                 "vat_rate": "0"
             }
         ]
