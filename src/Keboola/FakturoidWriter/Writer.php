@@ -55,6 +55,8 @@ class Writer
             } catch (BadResponseException $e) {
                 $numOfErrors++;
                 $this->consoleOutput->writeln($e->getMessage());
+                $this->consoleOutput->writeln((string) $e->getResponse()->getBody());
+
             }
         }
         $this->consoleOutput->writeln('Processing done. Number of errors: ' . $numOfErrors);
