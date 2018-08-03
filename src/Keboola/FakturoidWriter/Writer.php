@@ -58,6 +58,9 @@ class Writer
                 $this->consoleOutput->writeln((string) 'debug: ' . $e->getResponse()->getBody());
             }
         }
-        $this->consoleOutput->writeln('Processing done. Number of errors: ' . $numOfErrors);
+        $this->consoleOutput->writeln('Processing done.');
+        if ($numOfErrors !== 0) {
+            throw new UserException('Number of errors: ' . $numOfErrors);
+        }
     }
 }

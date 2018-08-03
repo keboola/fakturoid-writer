@@ -80,13 +80,14 @@ JSON
             'data directory' => $this->dataDir,
         ]);
 
-        $this->assertSame(0, $exitCode);
+        $this->assertSame(1, $exitCode);
 
         $expectedConsoleOutput = <<<TXT
 Client error: `POST invoices.json` resulted in a `422 Unprocessable Entity` response:
 {"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}\n
 debug: {"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}
-Processing done. Number of errors: 1\n
+Processing done.
+Number of errors: 1\n
 TXT;
         $this->assertSame($expectedConsoleOutput, $commandTester->getDisplay());
 

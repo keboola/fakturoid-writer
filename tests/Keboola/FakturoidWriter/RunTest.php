@@ -77,7 +77,7 @@ JSON
         $this->assertSame(0, $exitCode);
 
         $expectedConsoleOutput = <<<TXT
-Processing done. Number of errors: 0\n
+Processing done.\n
 TXT;
         $this->assertSame($expectedConsoleOutput, $commandTester->getDisplay());
 
