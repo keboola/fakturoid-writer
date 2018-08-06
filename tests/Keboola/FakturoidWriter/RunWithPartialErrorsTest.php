@@ -54,7 +54,7 @@ JSON
             ),
             // error
             new Response(422, [], <<<JSON
-{"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}
+{"errors":{"exchange_rate":["není číslo","je povinná položka"]}}
 JSON
             ),
             // second invoice
@@ -83,9 +83,8 @@ JSON
         $this->assertSame(1, $exitCode);
 
         $expectedConsoleOutput = <<<TXT
-Client error: `POST invoices.json` resulted in a `422 Unprocessable Entity` response:
-{"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}\n
-debug: {"errors":{"client_name":["je povinná položka"],"subject_id":["Kontakt neexistuje."]}}
+Client error: `POST invoices.json` resulted in a `422 Unprocessable Entity` response
+debug: {"errors":{"exchange_rate":["není číslo","je povinná položka"]}}
 Processing done.
 Number of errors: 1\n
 TXT;
