@@ -120,3 +120,7 @@ To simulate real run:
 ## License
 
 MIT. See [license file.](/license.md)
+
+## License
+
+MIT licensed, see [LICENSE](./LICENSE) file.
