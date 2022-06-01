@@ -119,4 +119,4 @@ To simulate real run:
 
 ## License
 
-MIT. See [license file.](/license.md)
+MIT licensed, see [LICENSE](./LICENSE) file.
